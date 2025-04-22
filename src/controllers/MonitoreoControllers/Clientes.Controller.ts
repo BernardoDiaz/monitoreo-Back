@@ -43,6 +43,26 @@ try {
 };
 }
 
+export const getCliente = async (req: Request, res: Response) => {
+    try {
+        const cliente = await Clientes.findAll({
+            attributes: ['id', 'empresa', 'contacto'],
+        });
+        if (cliente) {
+            res.json(cliente);
+        } else {
+            return res.status(404).json({
+                msg: `El registro no existe`,
+            });
+        }
+    } catch (error) {
+        res.status(400).json({
+            msg: "Ups ocurrio un error",
+            error
+        })
+    }
+} 
+
 export const updateCliente = async (req: Request, res: Response) => {
 
     const { id } = req.params;

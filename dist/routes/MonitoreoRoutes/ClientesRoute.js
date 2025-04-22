@@ -4,6 +4,7 @@ const express_1 = require("express");
 const ClientesController_1 = require("../../controllers/MonitoreoControllers/ClientesController");
 const router = (0, express_1.Router)();
 router.get('/', ClientesController_1.getClientes);
+router.get('/empresas', ClientesController_1.getCliente);
 router.post('/', ClientesController_1.newCliente);
 router.put('/:id', ClientesController_1.updateCliente);
 router.delete('/:id', ClientesController_1.deleteCliente);

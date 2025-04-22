@@ -1,5 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../db/connection";
+import { Clientes } from "./Clientes";
+
 
 export const Visitas = sequelize.define('visitas', {
     id: {
@@ -17,9 +19,9 @@ export const Visitas = sequelize.define('visitas', {
         allowNull: true
     },
     fecha: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true
-    },
+    }, 
     hora: {
         type: DataTypes.TIME,
         allowNull: true
@@ -32,4 +34,14 @@ export const Visitas = sequelize.define('visitas', {
         type: DataTypes.STRING,
         allowNull: true
     }
+});
+
+Visitas.belongsTo(Clientes, {
+    foreignKey: 'idCliente',
+    as: 'cliente'
+});
+
+Clientes.hasMany(Visitas, {
+    foreignKey: 'idCliente',
+    as: 'visitas'
 });

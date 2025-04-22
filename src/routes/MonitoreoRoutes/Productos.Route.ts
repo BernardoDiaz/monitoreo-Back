@@ -1,6 +1,6 @@
 import { Router } from "express";
 import validateToken from "../UserRoute/validate-token";
-import { newProducto, getProductos, updateProducto, deleteProducto } from "../../controllers/MonitoreoControllers/ProductosController";
+import { newProducto, getProductos, updateProducto, deleteProducto } from "../../controllers/MonitoreoControllers/Productos.Controller";
 
 const router = Router();
 

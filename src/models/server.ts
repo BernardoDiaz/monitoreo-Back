@@ -1,13 +1,13 @@
 import express from 'express';
 import cors from "cors";
 //RUTAS
-import routesUsers from '../routes/UserRoute/user';
-import routesCliente from '../routes/MonitoreoRoutes/ClientesRoute';
-import routesCategorias from '../routes/MonitoreoRoutes/CategoriasRoute';
-import routesConfiguracion from '../routes/MonitoreoRoutes/ConfiguracionRoute';
-import routesProductos from '../routes/MonitoreoRoutes/ProductosRoute';
-//import routesSeguimiento from '../routes/MonitoreoRoutes/SeguimientoRoute';
-//import routesVisitas from '../routes/MonitoreoRoutes/VisitaRoute';
+import routesUsers from '../routes/UserRoute/user.Route';
+import routesCliente from '../routes/MonitoreoRoutes/Clientes.Route';
+import routesCategorias from '../routes/MonitoreoRoutes/Categorias.Route';
+import routesConfiguracion from '../routes/MonitoreoRoutes/Configuracion.Route';
+import routesProductos from '../routes/MonitoreoRoutes/Productos.Route';
+import routesSeguimiento from '../routes/MonitoreoRoutes/Seguimiento.Route';
+import routesVisitas from '../routes/MonitoreoRoutes/Visita.Route';
 //MODELOS DE BD
 import { user } from './usersModels/user';
 import { Clientes } from './MonitoreoModels/Clientes';
@@ -46,8 +46,8 @@ class Server {
         this.app.use('/api/categorias', routesCategorias);
         this.app.use('/api/configuracion', routesConfiguracion);
         this.app.use('/api/productos', routesProductos);
-        //this.app.use('/api/seguimiento', routesSeguimiento);
-        //this.app.use('/api/visitas', routesVisitas);
+        this.app.use('/api/seguimiento', routesSeguimiento);
+        this.app.use('/api/visitas', routesVisitas);
 
     };
 

@@ -6,7 +6,7 @@ export const newProducto = async (req: Request, res: Response) => {
 
     try {
         await Productos.create({
-            idCategoria: idcategoria,
+            idCategoria: idcategoria, 
             producto: producto,
             precio: precio
         });
