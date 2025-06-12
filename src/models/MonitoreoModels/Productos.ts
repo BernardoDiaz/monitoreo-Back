@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../db/connection";
+import { Categorias } from "./Categorias";
 
 export const Productos = sequelize.define('productos', {
     id: {
@@ -21,3 +22,15 @@ export const Productos = sequelize.define('productos', {
         allowNull: true
     }
 });  
+
+Productos.belongsTo(Categorias, {
+    foreignKey: 'idCategoria',
+    as: 'categoria',
+    onDelete: 'RESTRICT'
+});
+
+Categorias.hasMany(Productos, {
+    foreignKey: 'idCategoria', 
+    as: 'productos',
+    onDelete: 'RESTRICT'
+}); 

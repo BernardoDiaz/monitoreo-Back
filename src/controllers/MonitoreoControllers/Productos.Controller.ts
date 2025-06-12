@@ -25,7 +25,11 @@ export const newProducto = async (req: Request, res: Response) => {
 export const getProductos = async (req: Request, res: Response) => {
     try {
         const productos = await Productos.findAll({
-            attributes: ['id', 'idCategoria', 'producto', 'precio'],});
+            attributes: ['id', 'idCategoria', 'producto', 'precio'],
+            include: [{ model: require('../../models/MonitoreoModels/Categorias').Categorias, as: 'categoria',
+                attributes: ['categoria']
+            }]
+        });
         res.json(productos);
     }
     catch (error) {

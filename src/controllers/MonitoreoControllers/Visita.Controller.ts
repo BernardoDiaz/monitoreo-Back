@@ -50,7 +50,7 @@ export const getVisitasAgendadas = async (req: Request, res: Response) => {
                 attributes: ['empresa', 'contacto'], // Selecciona empresa y contacto de la tabla clientes
                 required: true // Realiza un INNER JOIN (relación obligatoria)
             }]
-        });
+        }); 
 
         res.json(resultados);
     } catch (error) {

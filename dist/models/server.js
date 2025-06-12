@@ -16,20 +16,18 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 //RUTAS
 const user_Route_1 = __importDefault(require("../routes/UserRoute/user.Route"));
-const Clientes_Route_1 = __importDefault(require("../routes/MonitoreoRoutes/Clientes.Route"));
-const Categorias_Route_1 = __importDefault(require("../routes/MonitoreoRoutes/Categorias.Route"));
-const Configuracion_Route_1 = __importDefault(require("../routes/MonitoreoRoutes/Configuracion.Route"));
-const Productos_Route_1 = __importDefault(require("../routes/MonitoreoRoutes/Productos.Route"));
-const Seguimiento_Route_1 = __importDefault(require("../routes/MonitoreoRoutes/Seguimiento.Route"));
-const Visita_Route_1 = __importDefault(require("../routes/MonitoreoRoutes/Visita.Route"));
+const company_Route_1 = __importDefault(require("../routes/CompanyRoutes/company.Route"));
+const note_Route_1 = __importDefault(require("../routes/CompanyRoutes/note.Route"));
+const registerActivities_Route_1 = __importDefault(require("../routes/CompanyRoutes/registerActivities.Route"));
+const program_Route_1 = __importDefault(require("../routes/CompanyRoutes/program.Route"));
+const task_Route_1 = __importDefault(require("../routes/CompanyRoutes/task.Route"));
 //MODELOS DE BD
 const user_1 = require("./usersModels/user");
-const Clientes_1 = require("./MonitoreoModels/Clientes");
-const Categorias_1 = require("./MonitoreoModels/Categorias");
-const Configuracion_1 = require("./MonitoreoModels/Configuracion");
-const Productos_1 = require("./MonitoreoModels/Productos");
-const Seguimiento_1 = require("./MonitoreoModels/Seguimiento");
-const Visita_1 = require("./MonitoreoModels/Visita");
+const company_1 = require("./CompanyModels/company");
+const note_1 = require("./CompanyModels/note");
+const registerActivities_1 = require("./CompanyModels/registerActivities");
+const program_1 = require("./CompanyModels/program");
+const task_1 = require("./CompanyModels/task");
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -50,13 +48,11 @@ class Server {
     routes() {
         //endpoint usuarios
         this.app.use('/api/users', user_Route_1.default);
-        this.app.use('/api/users/login', user_Route_1.default);
-        this.app.use('/api/clientes', Clientes_Route_1.default);
-        this.app.use('/api/categorias', Categorias_Route_1.default);
-        this.app.use('/api/configuracion', Configuracion_Route_1.default);
-        this.app.use('/api/productos', Productos_Route_1.default);
-        this.app.use('/api/seguimiento', Seguimiento_Route_1.default);
-        this.app.use('/api/visitas', Visita_Route_1.default);
+        this.app.use('/api/companys', company_Route_1.default);
+        this.app.use('/api/notes', note_Route_1.default);
+        this.app.use('/api/activities', registerActivities_Route_1.default);
+        this.app.use('/api/programs', program_Route_1.default);
+        this.app.use('/api/tasks', task_Route_1.default);
     }
     ;
     midlewares() {
@@ -72,13 +68,11 @@ class Server {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 yield user_1.user.sync();
-                yield Clientes_1.Clientes.sync();
-                yield Categorias_1.Categorias.sync();
-                yield Configuracion_1.Configuracions.sync();
-                yield Productos_1.Productos.sync();
-                yield Seguimiento_1.Seguimientos.sync();
-                yield Visita_1.Visitas.sync();
-                yield user_1.user.sync();
+                yield company_1.company.sync();
+                yield note_1.note.sync();
+                yield registerActivities_1.registerActivities.sync();
+                yield program_1.program.sync();
+                yield task_1.task.sync();
                 console.log('Connection valid');
             }
             catch (error) {

@@ -2,20 +2,19 @@ import express from 'express';
 import cors from "cors";
 //RUTAS
 import routesUsers from '../routes/UserRoute/user.Route';
-import routesCliente from '../routes/MonitoreoRoutes/Clientes.Route';
-import routesCategorias from '../routes/MonitoreoRoutes/Categorias.Route';
-import routesConfiguracion from '../routes/MonitoreoRoutes/Configuracion.Route';
-import routesProductos from '../routes/MonitoreoRoutes/Productos.Route';
-import routesSeguimiento from '../routes/MonitoreoRoutes/Seguimiento.Route';
-import routesVisitas from '../routes/MonitoreoRoutes/Visita.Route';
+import routesCompany from '../routes/CompanyRoutes/company.Route';
+import routesNote from '../routes/CompanyRoutes/note.Route';
+import routesRegisterActivities from '../routes/CompanyRoutes/registerActivities.Route';
+import routesProgram from '../routes/CompanyRoutes/program.Route';
+import routesTask from '../routes/CompanyRoutes/task.Route';
+
 //MODELOS DE BD
 import { user } from './usersModels/user';
-import { Clientes } from './MonitoreoModels/Clientes';
-import { Categorias } from './MonitoreoModels/Categorias';
-import { Configuracions } from './MonitoreoModels/Configuracion';
-import { Productos } from './MonitoreoModels/Productos';
-import { Seguimientos } from './MonitoreoModels/Seguimiento';
-import { Visitas } from './MonitoreoModels/Visita';
+import { company } from './CompanyModels/company';
+import { note } from './CompanyModels/note'; 
+import { registerActivities } from './CompanyModels/registerActivities';
+import { program } from './CompanyModels/program';
+import { task } from './CompanyModels/task';
 
 class Server {
     private app: express.Application;
@@ -41,13 +40,11 @@ class Server {
     routes() {
         //endpoint usuarios
         this.app.use('/api/users', routesUsers);
-        this.app.use('/api/users/login', routesUsers);
-        this.app.use('/api/clientes', routesCliente);
-        this.app.use('/api/categorias', routesCategorias);
-        this.app.use('/api/configuracion', routesConfiguracion);
-        this.app.use('/api/productos', routesProductos);
-        this.app.use('/api/seguimiento', routesSeguimiento);
-        this.app.use('/api/visitas', routesVisitas);
+        this.app.use('/api/companys', routesCompany);
+        this.app.use('/api/notes', routesNote);
+        this.app.use('/api/activities', routesRegisterActivities);
+        this.app.use('/api/programs', routesProgram);
+        this.app.use('/api/tasks', routesTask);
 
     };
 
@@ -64,13 +61,11 @@ class Server {
     async dbConnect() {
         try {
             await user.sync();
-            await Clientes.sync();
-            await Categorias.sync();
-            await Configuracions.sync();
-            await Productos.sync();
-            await Seguimientos.sync();
-            await Visitas.sync();
-            await user.sync();
+            await company.sync(); 
+            await note.sync();
+            await registerActivities.sync();
+            await program.sync();
+            await task.sync(); 
             console.log('Connection valid');                                                                                                                                                                                                                                                                                                    
         } catch (error) {
             console.error('Connection not valid', error);

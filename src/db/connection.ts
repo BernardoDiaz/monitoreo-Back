@@ -6,4 +6,4 @@ const sequelize = new Sequelize('seguimiento_clientes2','root','root123456',{
     dialect: 'mysql'
 }); 
 
-export default sequelize;   
+export default sequelize;

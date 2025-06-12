@@ -35,6 +35,9 @@ const getProductos = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const productos = yield Productos_1.Productos.findAll({
             attributes: ['id', 'idCategoria', 'producto', 'precio'],
+            include: [{ model: require('../../models/MonitoreoModels/Categorias').Categorias, as: 'categoria',
+                    attributes: ['categoria']
+                }]
         });
         res.json(productos);
     }
