@@ -25,12 +25,12 @@ export const program = sequelize.define('programs', {
     },
     programDescription: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false 
     },
     //para enlaces o ubicaciones de la actividad
     programLocation: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     //para el saber que empresa creo la actividad
     companyId: {

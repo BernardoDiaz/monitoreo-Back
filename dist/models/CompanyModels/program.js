@@ -35,7 +35,7 @@ exports.program = connection_1.default.define('programs', {
     //para enlaces o ubicaciones de la actividad
     programLocation: {
         type: sequelize_1.DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     //para el saber que empresa creo la actividad
     companyId: {

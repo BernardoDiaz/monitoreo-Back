@@ -57,7 +57,7 @@ class Server {
         //cors
         this.app.use(cors());
     };
-
+ 
     async dbConnect() {
         try {
             await user.sync();
