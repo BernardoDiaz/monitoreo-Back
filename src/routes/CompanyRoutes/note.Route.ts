@@ -5,7 +5,7 @@ import { deleteNote, getNotes, newNote, updateNote } from '../../controllers/Com
 const router = Router();
 
 router.post('/',newNote);
-router.get('/:id',getNotes);
+router.get('/:companyId',getNotes);
 router.put('/:id',updateNote);
 router.delete('/:id',deleteNote);
 

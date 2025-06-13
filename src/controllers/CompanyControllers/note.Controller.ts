@@ -30,8 +30,8 @@ export const getNotes = async (req: Request, res: Response) => {
         }
 
         const notes = await note.findAll({
-            where: { companyId },
-            include: ["company"]
+            attributes:['id','noteText'],
+            where: { companyId:companyId },
         });
 
         return res.status(200).json(notes);

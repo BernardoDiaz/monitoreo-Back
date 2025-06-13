@@ -35,8 +35,8 @@ export const getTasks = async (req: Request, res: Response) => {
 
         // Obtener las tareas asociadas a la empresa
         const tasks = await task.findAll({
-            where: { companyId },
-            include: ["company"]
+            attributes:['id','taskName','taskStatus'],
+            where: { companyId:companyId }
         });
 
         return res.status(200).json(tasks);

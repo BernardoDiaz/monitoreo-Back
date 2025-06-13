@@ -4,7 +4,7 @@ const express_1 = require("express");
 const program_Controller_1 = require("../../controllers/CompanyControllers/program.Controller");
 const router = (0, express_1.Router)();
 router.post('/', program_Controller_1.newProgram);
-router.get('/:id', program_Controller_1.getPrograms);
+router.get('/:companyId', program_Controller_1.getPrograms);
 router.put('/:id', program_Controller_1.updateProgram);
 router.delete('/:id', program_Controller_1.deleteProgram);
 exports.default = router;

@@ -5,7 +5,7 @@ import { deleteTask, getTasks, newTask, updateTask } from '../../controllers/Com
 const router = Router();
 
 router.post('/',newTask);
-router.get('/:id',getTasks);
+router.get('/:companyId',getTasks);
 router.put('/:id',updateTask);
 router.delete('/:id',deleteTask);
 

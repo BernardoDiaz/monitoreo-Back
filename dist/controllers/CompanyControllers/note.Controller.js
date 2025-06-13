@@ -36,8 +36,8 @@ const getNotes = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             return res.status(400).json({ message: "Falta el ID de la empresa" });
         }
         const notes = yield note_1.note.findAll({
-            where: { companyId },
-            include: ["company"]
+            attributes: ['id', 'noteText'],
+            where: { companyId: companyId },
         });
         return res.status(200).json(notes);
     }

@@ -5,7 +5,7 @@ import { deleteProgram, getPrograms, newProgram, updateProgram } from '../../con
 const router = Router();
 
 router.post('/',newProgram);
-router.get('/:id',getPrograms);
+router.get('/:companyId',getPrograms);
 router.put('/:id',updateProgram);
 router.delete('/:id',deleteProgram);
 

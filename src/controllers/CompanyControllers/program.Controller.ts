@@ -32,8 +32,10 @@ export const getPrograms = async (req: Request, res: Response) => {
             return res.status(400).json({ message: "Falta el ID de la empresa" });
         }
         const programs = await program.findAll({
-            where: { companyId },
-            include: ["company"]
+            attributes:['id','programActivity','programDate',
+            'programTimeStart','programTimeEnd','programDescription',
+            'programLocation'],
+            where: { companyId:companyId }
         });
         return res.status(200).json(programs);
     } catch (error) {

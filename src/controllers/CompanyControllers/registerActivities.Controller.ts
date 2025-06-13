@@ -36,8 +36,9 @@ export const getActivities = async (req: Request, res: Response) => {
 
         // Obtener las actividades asociadas a la empresa
         const activities = await registerActivities.findAll({
-            where: { companyId },
-            include: ["company"]
+            attributes:['id','activityType','activityDate',
+                'activityDescription'],
+            where: { companyId:companyId },
         });
 
         return res.status(200).json(activities);

@@ -5,7 +5,7 @@ import { deleteActivity, getActivities, newActivity, updateActivity } from '../.
 const router = Router();
 
 router.post('/',newActivity);
-router.get('/:id',getActivities);
+router.get('/:companyId',getActivities);
 router.put('/:id',updateActivity);
 router.delete('/:id',deleteActivity);
 

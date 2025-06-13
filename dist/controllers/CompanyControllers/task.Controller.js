@@ -41,8 +41,8 @@ const getTasks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         // Obtener las tareas asociadas a la empresa
         const tasks = yield task_1.task.findAll({
-            where: { companyId },
-            include: ["company"]
+            attributes: ['id', 'taskName', 'taskStatus'],
+            where: { companyId: companyId }
         });
         return res.status(200).json(tasks);
     }
