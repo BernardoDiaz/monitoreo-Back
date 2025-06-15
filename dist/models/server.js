@@ -21,6 +21,8 @@ const note_Route_1 = __importDefault(require("../routes/CompanyRoutes/note.Route
 const registerActivities_Route_1 = __importDefault(require("../routes/CompanyRoutes/registerActivities.Route"));
 const program_Route_1 = __importDefault(require("../routes/CompanyRoutes/program.Route"));
 const task_Route_1 = __importDefault(require("../routes/CompanyRoutes/task.Route"));
+const quote_Route_1 = __importDefault(require("../routes/Quote/quote.Route"));
+const quoteDetails_Route_1 = __importDefault(require("../routes/Quote/quoteDetails.Route"));
 //MODELOS DE BD
 const user_1 = require("./usersModels/user");
 const company_1 = require("./CompanyModels/company");
@@ -28,6 +30,8 @@ const note_1 = require("./CompanyModels/note");
 const registerActivities_1 = require("./CompanyModels/registerActivities");
 const program_1 = require("./CompanyModels/program");
 const task_1 = require("./CompanyModels/task");
+const quote_1 = require("./Quote/quote");
+const quoteDetails_1 = require("./Quote/quoteDetails");
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -53,6 +57,8 @@ class Server {
         this.app.use('/api/activities', registerActivities_Route_1.default);
         this.app.use('/api/programs', program_Route_1.default);
         this.app.use('/api/tasks', task_Route_1.default);
+        this.app.use('/api/quote', quote_Route_1.default);
+        this.app.use('/api/quotedetails', quoteDetails_Route_1.default);
     }
     ;
     midlewares() {
@@ -73,6 +79,8 @@ class Server {
                 yield registerActivities_1.registerActivities.sync();
                 yield program_1.program.sync();
                 yield task_1.task.sync();
+                yield quote_1.quote.sync();
+                yield quoteDetails_1.quoteDetails.sync();
                 console.log('Connection valid');
             }
             catch (error) {

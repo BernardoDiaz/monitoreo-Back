@@ -7,6 +7,8 @@ import routesNote from '../routes/CompanyRoutes/note.Route';
 import routesRegisterActivities from '../routes/CompanyRoutes/registerActivities.Route';
 import routesProgram from '../routes/CompanyRoutes/program.Route';
 import routesTask from '../routes/CompanyRoutes/task.Route';
+import routesQuote from '../routes/Quote/quote.Route';
+import routesQuoteDetails from '../routes/Quote/quoteDetails.Route';
 
 //MODELOS DE BD
 import { user } from './usersModels/user';
@@ -15,6 +17,8 @@ import { note } from './CompanyModels/note';
 import { registerActivities } from './CompanyModels/registerActivities';
 import { program } from './CompanyModels/program';
 import { task } from './CompanyModels/task';
+import { quote } from './Quote/quote';
+import { quoteDetails } from './Quote/quoteDetails';
 
 class Server {
     private app: express.Application;
@@ -45,6 +49,8 @@ class Server {
         this.app.use('/api/activities', routesRegisterActivities);
         this.app.use('/api/programs', routesProgram);
         this.app.use('/api/tasks', routesTask);
+        this.app.use('/api/quote', routesQuote);
+        this.app.use('/api/quotedetails', routesQuoteDetails);
 
     };
 
@@ -66,6 +72,8 @@ class Server {
             await registerActivities.sync();
             await program.sync();
             await task.sync(); 
+            await quote.sync();
+            await quoteDetails.sync();
             console.log('Connection valid');                                                                                                                                                                                                                                                                                                    
         } catch (error) {
             console.error('Connection not valid', error);
