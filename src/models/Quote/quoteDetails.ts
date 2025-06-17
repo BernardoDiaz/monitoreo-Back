@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../db/connection";
+import { quote } from "./quote";
 
 export const quoteDetails = sequelize.define('quoteDetails', {
     id: {
@@ -32,4 +33,9 @@ export const quoteDetails = sequelize.define('quoteDetails', {
         allowNull: false,
         defaultValue: 0
     }
+});
+
+quoteDetails.belongsTo(quote, {
+    foreignKey: 'quoteId',
+    targetKey: 'id'
 });

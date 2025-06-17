@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateTask = exports.deleteTask = exports.getTasks = exports.newTask = void 0;
+exports.updateTasksBulk = exports.deleteTask = exports.getTasks = exports.newTask = void 0;
 const task_1 = require("../../models/CompanyModels/task");
 const newTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -74,27 +74,34 @@ const deleteTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteTask = deleteTask;
-const updateTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateTasksBulk = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id } = req.params;
-        const { taskName, taskStatus } = req.body;
-        // Validar que se reciban todos los campos necesarios
-        if (!id || !taskName || !taskStatus) {
-            return res.status(400).json({ message: "Todos los campos son obligatorios" });
+        const { tasks } = req.body;
+        // Validar que se reciba un array de tareas
+        if (!Array.isArray(tasks) || tasks.length === 0) {
+            return res.status(400).json({ message: "Se requiere un array de tareas para actualizar" });
         }
-        // Buscar la tarea por su ID
-        const taskToUpdate = yield task_1.task.findByPk(id);
-        if (!taskToUpdate) {
-            return res.status(404).json({ message: "Tarea no encontrada" });
+        const updateResults = [];
+        for (const t of tasks) {
+            const { id, taskStatus } = t;
+            if (!id || !taskStatus) {
+                updateResults.push({ id, success: false, message: "Faltan campos obligatorios" });
+                continue;
+            }
+            const taskToUpdate = yield task_1.task.findByPk(id);
+            if (!taskToUpdate) {
+                updateResults.push({ id, success: false, message: "Tarea no encontrada" });
+                continue;
+            }
+            taskToUpdate.set({ taskStatus });
+            yield taskToUpdate.save();
+            updateResults.push({ id, success: true, message: "Tarea actualizada correctamente" });
         }
-        // Actualizar la tarea
-        taskToUpdate.set({ taskName, taskStatus });
-        yield taskToUpdate.save();
-        return res.status(200).json({ message: "Tarea actualizada correctamente" });
+        return res.status(200).json({ results: updateResults });
     }
     catch (error) {
-        console.error("Error al actualizar la tarea:", error);
+        console.error("Error al actualizar tareas:", error);
         return res.status(500).json({ message: "Error interno del servidor" });
     }
 });
-exports.updateTask = updateTask;
+exports.updateTasksBulk = updateTasksBulk;

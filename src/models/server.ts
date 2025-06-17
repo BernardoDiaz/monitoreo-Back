@@ -9,6 +9,7 @@ import routesProgram from '../routes/CompanyRoutes/program.Route';
 import routesTask from '../routes/CompanyRoutes/task.Route';
 import routesQuote from '../routes/Quote/quote.Route';
 import routesQuoteDetails from '../routes/Quote/quoteDetails.Route';
+import routesDashboard from '../routes/DashboardRoute/dashboard.Route';
 
 //MODELOS DE BD
 import { user } from './usersModels/user';
@@ -41,9 +42,9 @@ class Server {
         });
     };
 
-    routes() {
+    routes() { 
         //endpoint usuarios
-        this.app.use('/api/users', routesUsers);
+        this.app.use('/api/users', routesUsers); 
         this.app.use('/api/companys', routesCompany);
         this.app.use('/api/notes', routesNote);
         this.app.use('/api/activities', routesRegisterActivities);
@@ -51,6 +52,7 @@ class Server {
         this.app.use('/api/tasks', routesTask);
         this.app.use('/api/quote', routesQuote);
         this.app.use('/api/quotedetails', routesQuoteDetails);
+        this.app.use('/api/dashboard', routesDashboard);
 
     };
 
@@ -64,7 +66,7 @@ class Server {
         this.app.use(cors());
     };
  
-    async dbConnect() {
+    async dbConnect() { 
         try {
             await user.sync();
             await company.sync(); 

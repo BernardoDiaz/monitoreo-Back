@@ -23,6 +23,7 @@ const program_Route_1 = __importDefault(require("../routes/CompanyRoutes/program
 const task_Route_1 = __importDefault(require("../routes/CompanyRoutes/task.Route"));
 const quote_Route_1 = __importDefault(require("../routes/Quote/quote.Route"));
 const quoteDetails_Route_1 = __importDefault(require("../routes/Quote/quoteDetails.Route"));
+const dashboard_Route_1 = __importDefault(require("../routes/DashboardRoute/dashboard.Route"));
 //MODELOS DE BD
 const user_1 = require("./usersModels/user");
 const company_1 = require("./CompanyModels/company");
@@ -59,6 +60,7 @@ class Server {
         this.app.use('/api/tasks', task_Route_1.default);
         this.app.use('/api/quote', quote_Route_1.default);
         this.app.use('/api/quotedetails', quoteDetails_Route_1.default);
+        this.app.use('/api/dashboard', dashboard_Route_1.default);
     }
     ;
     midlewares() {

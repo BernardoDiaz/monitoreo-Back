@@ -1,13 +1,14 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../db/connection";
+import { user } from "../usersModels/user";
 
 export const company = sequelize.define('companys', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true 
-    },
-    companyName:{
+        autoIncrement: true
+    }, 
+    companyName: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -27,12 +28,12 @@ export const company = sequelize.define('companys', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    TeamOwner:{
+    TeamOwner: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
     // _____________________
-    companyWeb:{
+    companyWeb: {
         type: DataTypes.STRING,
         allowNull: true
     },
@@ -40,8 +41,14 @@ export const company = sequelize.define('companys', {
         type: DataTypes.STRING,
         allowNull: true
     },
-    originContact:{
+    originContact: {
         type: DataTypes.STRING,
         allowNull: true
     }
+});
+
+company.belongsTo(user, {
+    foreignKey: 'TeamOwner',
+    targetKey: 'id',
+    as: 'teamOwner'
 });

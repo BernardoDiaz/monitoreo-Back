@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../db/connection";
+import { company } from "../CompanyModels/company";
 
 export const quote = sequelize.define('quotes',{
     id: {
@@ -23,4 +24,9 @@ export const quote = sequelize.define('quotes',{
         type:DataTypes.STRING,
         allowNull:false
     }
+});
+
+quote.belongsTo(company, {
+    foreignKey: 'companyId',
+    targetKey: 'id'
 });

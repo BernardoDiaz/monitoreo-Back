@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../db/connection";
+import { company } from "./company";
 
 export const registerActivities = sequelize.define('registerActivities', {
     id: {
@@ -23,4 +24,9 @@ export const registerActivities = sequelize.define('registerActivities', {
         type: DataTypes.INTEGER,
         allowNull: false
     }
+});
+
+registerActivities.belongsTo(company, {
+    foreignKey: 'companyId',
+    targetKey: 'id'
 });

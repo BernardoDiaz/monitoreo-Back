@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.registerActivities = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../db/connection"));
+const company_1 = require("./company");
 exports.registerActivities = connection_1.default.define('registerActivities', {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -28,4 +29,8 @@ exports.registerActivities = connection_1.default.define('registerActivities', {
         type: sequelize_1.DataTypes.INTEGER,
         allowNull: false
     }
+});
+exports.registerActivities.belongsTo(company_1.company, {
+    foreignKey: 'companyId',
+    targetKey: 'id'
 });

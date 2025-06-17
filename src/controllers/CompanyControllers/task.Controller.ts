@@ -70,29 +70,38 @@ export const deleteTask = async (req: Request, res: Response) => {
     }
 }
 
-export const updateTask = async (req: Request, res: Response) => {
+export const updateTasksBulk = async (req: Request, res: Response) => {
     try {
-        const { id } = req.params;
-        const { taskName, taskStatus } = req.body;
+        const { tasks } = req.body;
 
-        // Validar que se reciban todos los campos necesarios
-        if (!id || !taskName || !taskStatus) {
-            return res.status(400).json({ message: "Todos los campos son obligatorios" });
+        // Validar que se reciba un array de tareas
+        if (!Array.isArray(tasks) || tasks.length === 0) {
+            return res.status(400).json({ message: "Se requiere un array de tareas para actualizar" });
         }
 
-        // Buscar la tarea por su ID
-        const taskToUpdate = await task.findByPk(id);
-        if (!taskToUpdate) {
-            return res.status(404).json({ message: "Tarea no encontrada" });
+        const updateResults = [];
+
+        for (const t of tasks) {
+            const { id, taskStatus } = t;
+            if (!id || !taskStatus) {
+                updateResults.push({ id, success: false, message: "Faltan campos obligatorios" });
+                continue;
+            }
+
+            const taskToUpdate = await task.findByPk(id);
+            if (!taskToUpdate) {
+                updateResults.push({ id, success: false, message: "Tarea no encontrada" });
+                continue;
+            }
+
+            taskToUpdate.set({ taskStatus });
+            await taskToUpdate.save();
+            updateResults.push({ id, success: true, message: "Tarea actualizada correctamente" });
         }
 
-        // Actualizar la tarea
-        taskToUpdate.set({ taskName, taskStatus });
-        await taskToUpdate.save();
-
-        return res.status(200).json({ message: "Tarea actualizada correctamente" });
+        return res.status(200).json({ results: updateResults });
     } catch (error) {
-        console.error("Error al actualizar la tarea:", error);
+        console.error("Error al actualizar tareas:", error);
         return res.status(500).json({ message: "Error interno del servidor" });
     }
 }

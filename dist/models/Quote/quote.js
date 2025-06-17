@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.quote = void 0;
 const sequelize_1 = require("sequelize");
 const connection_1 = __importDefault(require("../../db/connection"));
+const company_1 = require("../CompanyModels/company");
 exports.quote = connection_1.default.define('quotes', {
     id: {
         type: sequelize_1.DataTypes.INTEGER,
@@ -28,4 +29,8 @@ exports.quote = connection_1.default.define('quotes', {
         type: sequelize_1.DataTypes.STRING,
         allowNull: false
     }
+});
+exports.quote.belongsTo(company_1.company, {
+    foreignKey: 'companyId',
+    targetKey: 'id'
 });

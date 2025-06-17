@@ -88,28 +88,21 @@ export const getUsers = async (req: Request, res: Response) => {
 }
 
 export const getUserById = async (req: Request, res: Response) => {
-    const { username } = req.params;
-    const one = await user.findOne({ attributes: ['rol'], where: { username: username,state:1 } });
-
-    //validacion de existencia
+    const { id } = req.params;
     try {
-        if (one) {
-            const myString = JSON.stringify(one).slice(8, -2);
-            res.json(myString);
-
-        } else {
-
+        const userbyId = await user.findByPk(id,{attributes:['id','username']});
+        if (!userbyId) {
             return res.status(404).json({
-                msg: `No existe el usuario`
+                msg: "Empresa no encontrada"
             });
         }
+        res.json(userbyId);
     } catch (error) {
-        return res.status(404).json({
-            msg: `Ocurrio un error al buscar el usuario`
+        res.status(400).json({
+            msg: "Ups ocurrio un error",
+            error
         });
     }
-
-
 };
 
 export const deleteUser = async (req: Request, res: Response) => {

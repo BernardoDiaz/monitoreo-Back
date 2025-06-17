@@ -89,23 +89,20 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getUsers = getUsers;
 const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { username } = req.params;
-    const one = yield user_1.user.findOne({ attributes: ['rol'], where: { username: username, state: 1 } });
-    //validacion de existencia
+    const { id } = req.params;
     try {
-        if (one) {
-            const myString = JSON.stringify(one).slice(8, -2);
-            res.json(myString);
-        }
-        else {
+        const userbyId = yield user_1.user.findByPk(id, { attributes: ['id', 'username'] });
+        if (!userbyId) {
             return res.status(404).json({
-                msg: `No existe el usuario`
+                msg: "Empresa no encontrada"
             });
         }
+        res.json(userbyId);
     }
     catch (error) {
-        return res.status(404).json({
-            msg: `Ocurrio un error al buscar el usuario`
+        res.status(400).json({
+            msg: "Ups ocurrio un error",
+            error
         });
     }
 });

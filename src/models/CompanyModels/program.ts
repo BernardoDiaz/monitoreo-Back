@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../db/connection";
+import { company } from "./company";
 
 export const program = sequelize.define('programs', {
     id: {
@@ -37,4 +38,9 @@ export const program = sequelize.define('programs', {
         type: DataTypes.INTEGER,
         allowNull: false
     }
+});
+
+program.belongsTo(company, {
+    foreignKey: 'companyId',
+    targetKey: 'id'
 });
