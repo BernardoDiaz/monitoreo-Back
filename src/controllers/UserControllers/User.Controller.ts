@@ -71,11 +71,13 @@ export const loginUser = async (req: Request, res: Response) => {
     }
     //Si todo se cumplio vamos a la Generacion de token jwt 
     const token = Jwt.sign({
+        id: uservalidlog.id, // Incluye el id en el payload del token
         username: username,
         tdo:'hfgdbverig'
-    }, process.env.SECRET_KEY || '6KgpWr@TtNW4LKMKC5J8o6b6F', );//{ expiresIn: 1800 });
-    //Devolvemos el token como respuesta via JSON
-    res.json(token);
+    }, process.env.SECRET_KEY || '6KgpWr@TtNW4LKMKC5J8o6b6F'); //{ expiresIn: 1800 });
+
+    //Devolvemos el token y el id como respuesta via JSON
+    res.json({ token: token, id: uservalidlog.id });
 
 };
 

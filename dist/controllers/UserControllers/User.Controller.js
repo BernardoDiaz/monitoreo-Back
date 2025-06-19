@@ -74,11 +74,12 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     //Si todo se cumplio vamos a la Generacion de token jwt 
     const token = jsonwebtoken_1.default.sign({
+        id: uservalidlog.id,
         username: username,
         tdo: 'hfgdbverig'
     }, process.env.SECRET_KEY || '6KgpWr@TtNW4LKMKC5J8o6b6F'); //{ expiresIn: 1800 });
-    //Devolvemos el token como respuesta via JSON
-    res.json(token);
+    //Devolvemos el token y el id como respuesta via JSON
+    res.json({ token: token, id: uservalidlog.id });
 });
 exports.loginUser = loginUser;
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
