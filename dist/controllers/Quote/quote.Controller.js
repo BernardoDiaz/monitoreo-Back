@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateQuote = exports.deleteQuote = exports.getQuote = exports.createQuoteWithDetails = void 0;
+exports.updateQuoteTotal = exports.updateQuote = exports.deleteQuote = exports.getQuote = exports.createQuoteWithDetails = void 0;
 const quote_1 = require("../../models/Quote/quote");
 const quoteDetails_1 = require("../../models/Quote/quoteDetails");
 const createQuoteWithDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -93,3 +93,24 @@ const updateQuote = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.updateQuote = updateQuote;
+const updateQuoteTotal = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const { total } = req.body;
+        if (total === undefined) {
+            return res.status(400).json({ message: "Falta el total" });
+        }
+        const quoteToUpdate = yield quote_1.quote.findByPk(id);
+        if (!quoteToUpdate) {
+            return res.status(404).json({ message: "Cotización no encontrada" });
+        }
+        quoteToUpdate.set({ total });
+        yield quoteToUpdate.save();
+        return res.status(200).json(quoteToUpdate);
+    }
+    catch (error) {
+        console.error("Error al actualizar el total de la cotización:", error);
+        return res.status(500).json({ message: "Error al actualizar el total de la cotización" });
+    }
+});
+exports.updateQuoteTotal = updateQuoteTotal;

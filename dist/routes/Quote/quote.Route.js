@@ -6,5 +6,6 @@ const router = (0, express_1.Router)();
 router.post('/', quote_Controller_1.createQuoteWithDetails);
 router.get('/:companyId', quote_Controller_1.getQuote);
 router.put('/:id', quote_Controller_1.updateQuote);
+router.put('/total/:id', quote_Controller_1.updateQuoteTotal);
 router.delete('/:id', quote_Controller_1.deleteQuote);
 exports.default = router;

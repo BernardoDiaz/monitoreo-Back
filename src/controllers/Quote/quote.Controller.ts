@@ -81,7 +81,7 @@ export const deleteQuote = async (req: Request, res: Response) => {
 export const updateQuote = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const { companyId,concept,total } = req.body;
+        const { companyId, concept, total } = req.body;
 
         if (!companyId || !concept || !total) {
             return res.status(400).json({ message: "Faltan datos" });
@@ -100,5 +100,30 @@ export const updateQuote = async (req: Request, res: Response) => {
     } catch (error) {
         console.error("Error al actualizar la nota:", error);
         return res.status(500).json({ message: "Error al actualizar la nota" });
+    }
+}
+
+export const updateQuoteTotal = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { total } = req.body;
+
+        if (total === undefined) {
+            return res.status(400).json({ message: "Falta el total" });
+        }
+
+        const quoteToUpdate = await quote.findByPk(id);
+
+        if (!quoteToUpdate) {
+            return res.status(404).json({ message: "Cotización no encontrada" });
+        }
+
+        quoteToUpdate.set({ total });
+        await quoteToUpdate.save();
+
+        return res.status(200).json(quoteToUpdate);
+    } catch (error) {
+        console.error("Error al actualizar el total de la cotización:", error);
+        return res.status(500).json({ message: "Error al actualizar el total de la cotización" });
     }
 }
