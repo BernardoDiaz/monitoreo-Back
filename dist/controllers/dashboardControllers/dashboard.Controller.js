@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserManagedSoldQuotes = exports.getMonthlySales = exports.getSalesPercentageByCountry = exports.getUserManagedProgramsThisWeek = exports.getUserManagedPendingTasksCount = exports.getUserManagedQuotesCount = exports.getUserManagedCompaniesCount = exports.getUserManagedTasks = void 0;
+exports.getQuoteStatusPercentages = exports.getUserManagedSoldQuotes = exports.getMonthlySales = exports.getSalesPercentageByCountry = exports.getUserManagedProgramsThisWeek = exports.getUserManagedPendingTasksCount = exports.getUserManagedQuotesCount = exports.getUserManagedCompaniesCount = exports.getUserManagedTasks = void 0;
 const task_1 = require("../../models/CompanyModels/task");
 const company_1 = require("../../models/CompanyModels/company");
 const quote_1 = require("../../models/Quote/quote");
@@ -327,3 +327,49 @@ const getUserManagedSoldQuotes = (req, res) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.getUserManagedSoldQuotes = getUserManagedSoldQuotes;
+const getQuoteStatusPercentages = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.params;
+        if (!userId) {
+            return res.status(400).json({ message: "Falta el ID de usuario para la consulta" });
+        }
+        // Buscar IDs de empresas administradas por el usuario
+        const companies = yield company_1.company.findAll({
+            attributes: ["id"],
+            where: { TeamOwner: userId }
+        });
+        const companyIds = companies.map((c) => c.id);
+        if (companyIds.length === 0) {
+            return res.status(200).json({ message: "El usuario no administra empresas", data: [] });
+        }
+        // Obtener solo las cotizaciones de las empresas administradas por el usuario
+        const quotes = yield quote_1.quote.findAll({
+            attributes: ['status', 'total'],
+            where: { companyId: companyIds }
+        });
+        if (quotes.length === 0) {
+            return res.status(200).json({ message: "No hay cotizaciones para este usuario", data: [] });
+        }
+        // Sumar los totales por status
+        const totalsByStatus = {};
+        let grandTotal = 0;
+        quotes.forEach(q => {
+            const status = q.getDataValue('status');
+            const total = Number(q.getDataValue('total')) || 0;
+            totalsByStatus[status] = (totalsByStatus[status] || 0) + total;
+            grandTotal += total;
+        });
+        // Calcular el porcentaje por status
+        const percentages = Object.entries(totalsByStatus).map(([status, total]) => ({
+            status,
+            total,
+            percentage: grandTotal > 0 ? Number(((total / grandTotal) * 100).toFixed(2)) : 0
+        }));
+        return res.status(200).json({ data: percentages });
+    }
+    catch (error) {
+        console.error("Error al calcular los porcentajes por status:", error);
+        return res.status(500).json({ message: "Error al calcular los porcentajes por status" });
+    }
+});
+exports.getQuoteStatusPercentages = getQuoteStatusPercentages;

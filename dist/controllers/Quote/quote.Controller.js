@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateQuoteTotal = exports.updateQuote = exports.deleteQuote = exports.getQuote = exports.createQuoteWithDetails = void 0;
+exports.updateQuoteStatusById = exports.updateQuoteTotal = exports.updateQuote = exports.deleteQuote = exports.getQuote = exports.createQuoteWithDetails = void 0;
 const quote_1 = require("../../models/Quote/quote");
 const quoteDetails_1 = require("../../models/Quote/quoteDetails");
 const createQuoteWithDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -114,3 +114,24 @@ const updateQuoteTotal = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.updateQuoteTotal = updateQuoteTotal;
+const updateQuoteStatusById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        if (!id || status === undefined) {
+            return res.status(400).json({ message: "Faltan datos requeridos" });
+        }
+        const quoteToUpdate = yield quote_1.quote.findByPk(id);
+        if (!quoteToUpdate) {
+            return res.status(404).json({ message: "Cotización no encontrada" });
+        }
+        quoteToUpdate.set({ status });
+        yield quoteToUpdate.save();
+        return res.status(200).json({ message: "Status actualizado correctamente", quote: quoteToUpdate });
+    }
+    catch (error) {
+        console.error("Error al actualizar el status:", error);
+        return res.status(500).json({ message: "Error al actualizar el status" });
+    }
+});
+exports.updateQuoteStatusById = updateQuoteStatusById;

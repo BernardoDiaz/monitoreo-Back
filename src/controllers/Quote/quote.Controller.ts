@@ -127,3 +127,28 @@ export const updateQuoteTotal = async (req: Request, res: Response) => {
         return res.status(500).json({ message: "Error al actualizar el total de la cotización" });
     }
 }
+
+export const updateQuoteStatusById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+
+        if (!id || status === undefined) {
+            return res.status(400).json({ message: "Faltan datos requeridos" });
+        }
+
+        const quoteToUpdate = await quote.findByPk(id);
+
+        if (!quoteToUpdate) {
+            return res.status(404).json({ message: "Cotización no encontrada" });
+        }
+
+        quoteToUpdate.set({ status });
+        await quoteToUpdate.save();
+
+        return res.status(200).json({ message: "Status actualizado correctamente", quote: quoteToUpdate });
+    } catch (error) {
+        console.error("Error al actualizar el status:", error);
+        return res.status(500).json({ message: "Error al actualizar el status" });
+    }
+};

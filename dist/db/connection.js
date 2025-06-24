@@ -5,4 +5,8 @@ const sequelize = new sequelize_1.Sequelize('seguimiento_clientes2', 'root', 'ro
     host: 'localhost',
     dialect: 'mysql'
 });
+// const sequelize = new Sequelize('seguimiento_clientes2','bernardo','test123',{
+//     host: 'localhost',
+//     dialect: 'mysql'
+// }); 
 exports.default = sequelize;

@@ -7,5 +7,6 @@ router.post('/', quote_Controller_1.createQuoteWithDetails);
 router.get('/:companyId', quote_Controller_1.getQuote);
 router.put('/:id', quote_Controller_1.updateQuote);
 router.put('/total/:id', quote_Controller_1.updateQuoteTotal);
+router.put('/status/:id', quote_Controller_1.updateQuoteStatusById);
 router.delete('/:id', quote_Controller_1.deleteQuote);
 exports.default = router;

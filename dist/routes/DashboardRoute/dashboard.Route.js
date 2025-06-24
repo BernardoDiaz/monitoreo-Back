@@ -11,4 +11,5 @@ router.get('/programs/:userId', dashboard_Controller_1.getUserManagedProgramsThi
 router.get('/sales/percentage/country/:userId', dashboard_Controller_1.getSalesPercentageByCountry);
 router.get('/monthlySales/:userId', dashboard_Controller_1.getMonthlySales);
 router.get('/quotes/sold/:userId', dashboard_Controller_1.getUserManagedSoldQuotes);
+router.get('/statusSales/:userId', dashboard_Controller_1.getQuoteStatusPercentages);
 exports.default = router;

@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import validateToken from '../UserRoute/validate-token';
-import {getMonthlySales, getSalesPercentageByCountry, getUserManagedCompaniesCount, getUserManagedPendingTasksCount, getUserManagedProgramsThisWeek, getUserManagedQuotesCount, getUserManagedSoldQuotes, getUserManagedTasks } from '../../controllers/dashboardControllers/dashboard.Controller';
+import {getMonthlySales, getQuoteStatusPercentages, getSalesPercentageByCountry, getUserManagedCompaniesCount, getUserManagedPendingTasksCount, getUserManagedProgramsThisWeek, getUserManagedQuotesCount, getUserManagedSoldQuotes, getUserManagedTasks } from '../../controllers/dashboardControllers/dashboard.Controller';
 
 const router = Router();
 
@@ -12,5 +12,6 @@ router.get('/programs/:userId', getUserManagedProgramsThisWeek);
 router.get('/sales/percentage/country/:userId', getSalesPercentageByCountry);
 router.get('/monthlySales/:userId', getMonthlySales);
 router.get('/quotes/sold/:userId', getUserManagedSoldQuotes);
+router.get('/statusSales/:userId', getQuoteStatusPercentages);
 
 export default router;
