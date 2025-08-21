@@ -74,7 +74,7 @@ export const loginUser = async (req: Request, res: Response) => {
         id: uservalidlog.id, // Incluye el id en el payload del token
         username: username,
         tdo:'hfgdbverig'
-    }, process.env.SECRET_KEY || '6KgpWr@TtNW4LKMKC5J8o6b6F'); //{ expiresIn: 1800 });
+    }, process.env.SECRET_KEY || 'o6b6F6KgpWrLKMKC5J8@TtNW4'); //{ expiresIn: 1800 });
 
     //Devolvemos el token y el id como respuesta via JSON
     res.json({ token: token, id: uservalidlog.id });

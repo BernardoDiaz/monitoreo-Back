@@ -77,7 +77,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         id: uservalidlog.id,
         username: username,
         tdo: 'hfgdbverig'
-    }, process.env.SECRET_KEY || '6KgpWr@TtNW4LKMKC5J8o6b6F'); //{ expiresIn: 1800 });
+    }, process.env.SECRET_KEY || 'o6b6F6KgpWrLKMKC5J8@TtNW4'); //{ expiresIn: 1800 });
     //Devolvemos el token y el id como respuesta via JSON
     res.json({ token: token, id: uservalidlog.id });
 });
