@@ -20,6 +20,9 @@ import { program } from './CompanyModels/program';
 import { task } from './CompanyModels/task';
 import { quote } from './Quote/quote';
 import { quoteDetails } from './Quote/quoteDetails';
+import { metaVenta } from './MetaVentaModels/MetaVenta';
+import routesMetaVenta from '../routes/MetaVentaRoutes/MetaVenta.Route';
+// import eliminado: ventasMensuales
 
 class Server {
     private app: express.Application;
@@ -54,6 +57,9 @@ class Server {
         this.app.use('/api/quotedetails', routesQuoteDetails);
         this.app.use('/api/dashboard', routesDashboard);
 
+        // endpoint metas de ventas
+        this.app.use('/api/metas', routesMetaVenta);
+
     };
 
     midlewares() {
@@ -74,13 +80,15 @@ class Server {
             await registerActivities.sync();
             await program.sync();
             await task.sync(); 
-            await quote.sync();
+            await quote.sync(); 
             await quoteDetails.sync();
+            await metaVenta.sync();
+            // await ventasMensuales.sync();
             console.log('Connection valid');                                                                                                                                                                                                                                                                                                    
         } catch (error) {
             console.error('Connection not valid', error);
         };
     };
-};
+}; 
 
 export default Server;

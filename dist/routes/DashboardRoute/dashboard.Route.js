@@ -12,4 +12,6 @@ router.get('/sales/percentage/country/:userId', dashboard_Controller_1.getSalesP
 router.get('/monthlySales/:userId', dashboard_Controller_1.getMonthlySales);
 router.get('/quotes/sold/:userId', dashboard_Controller_1.getUserManagedSoldQuotes);
 router.get('/statusSales/:userId', dashboard_Controller_1.getQuoteStatusPercentages);
+router.get('/monthlySalesProgress/:userId/:year?/:month?', dashboard_Controller_1.getMonthlySalesProgressByCountry);
+router.get('/annualSalesProgress/:userId/:year?', dashboard_Controller_1.getAnnualSalesProgressByCountry);
 exports.default = router;

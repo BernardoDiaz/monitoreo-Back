@@ -33,6 +33,9 @@ const program_1 = require("./CompanyModels/program");
 const task_1 = require("./CompanyModels/task");
 const quote_1 = require("./Quote/quote");
 const quoteDetails_1 = require("./Quote/quoteDetails");
+const MetaVenta_1 = require("./MetaVentaModels/MetaVenta");
+const MetaVenta_Route_1 = __importDefault(require("../routes/MetaVentaRoutes/MetaVenta.Route"));
+// import eliminado: ventasMensuales
 class Server {
     constructor() {
         this.app = (0, express_1.default)();
@@ -61,6 +64,8 @@ class Server {
         this.app.use('/api/quote', quote_Route_1.default);
         this.app.use('/api/quotedetails', quoteDetails_Route_1.default);
         this.app.use('/api/dashboard', dashboard_Route_1.default);
+        // endpoint metas de ventas
+        this.app.use('/api/metas', MetaVenta_Route_1.default);
     }
     ;
     midlewares() {
@@ -83,6 +88,8 @@ class Server {
                 yield task_1.task.sync();
                 yield quote_1.quote.sync();
                 yield quoteDetails_1.quoteDetails.sync();
+                yield MetaVenta_1.metaVenta.sync();
+                // await ventasMensuales.sync();
                 console.log('Connection valid');
             }
             catch (error) {

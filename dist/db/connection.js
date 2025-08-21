@@ -4,7 +4,7 @@ const sequelize_1 = require("sequelize");
 // const sequelize = new Sequelize('seguimiento_clientes2','root','root123456',{
 //     host: 'localhost',
 //     dialect: 'mysql'
-// }); 
+// });  
 const sequelize = new sequelize_1.Sequelize('seguimiento_clientes2', 'bernardo', 'test123', {
     host: 'localhost',
     dialect: 'mysql'

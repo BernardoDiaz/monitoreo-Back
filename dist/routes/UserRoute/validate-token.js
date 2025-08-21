@@ -12,7 +12,10 @@ const validateToken = (req, res, next) => {
         try {
             //corte de token firmado por nuestro servidor
             const bearerToken = headerToken.slice(7);
-            jsonwebtoken_1.default.verify(bearerToken, process.env.SECRET_KEY || 'o6b6F6KgpWrLKMKC5J8@TtNW4');
+            const decoded = jsonwebtoken_1.default.verify(bearerToken, process.env.SECRET_KEY || 'o6b6F6KgpWrLKMKC5J8@TtNW4');
+            // Asignar el usuario decodificado al request
+            // @ts-ignore
+            req.usuario = decoded;
             next();
         }
         catch (error) {

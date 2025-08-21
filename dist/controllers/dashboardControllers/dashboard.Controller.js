@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getQuoteStatusPercentages = exports.getUserManagedSoldQuotes = exports.getMonthlySales = exports.getSalesPercentageByCountry = exports.getUserManagedProgramsThisWeek = exports.getUserManagedPendingTasksCount = exports.getUserManagedQuotesCount = exports.getUserManagedCompaniesCount = exports.getUserManagedTasks = void 0;
+exports.getAnnualSalesProgressByCountry = exports.getMonthlySalesProgressByCountry = exports.getQuoteStatusPercentages = exports.getUserManagedSoldQuotes = exports.getMonthlySales = exports.getSalesPercentageByCountry = exports.getUserManagedProgramsThisWeek = exports.getUserManagedPendingTasksCount = exports.getUserManagedQuotesCount = exports.getUserManagedCompaniesCount = exports.getUserManagedTasks = void 0;
 const task_1 = require("../../models/CompanyModels/task");
 const company_1 = require("../../models/CompanyModels/company");
 const quote_1 = require("../../models/Quote/quote");
@@ -373,3 +373,125 @@ const getQuoteStatusPercentages = (req, res) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.getQuoteStatusPercentages = getQuoteStatusPercentages;
+// --- MÉTODOS DE AVANCE VS META ---
+const MetaVenta_1 = require("../../models/MetaVentaModels/MetaVenta");
+const getMonthlySalesProgressByCountry = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId, year, month } = req.params;
+        if (!userId) {
+            return res.status(400).json({ message: "Falta el ID de usuario para la consulta" });
+        }
+        // Obtener empresas y países administrados por el usuario
+        const companies = yield company_1.company.findAll({
+            attributes: ["id", "companyCountry"],
+            where: { TeamOwner: userId }
+        });
+        const countryCompanyMap = {};
+        companies.forEach((c) => {
+            if (!countryCompanyMap[c.companyCountry])
+                countryCompanyMap[c.companyCountry] = [];
+            countryCompanyMap[c.companyCountry].push(c.id);
+        });
+        // Mes y año consultado
+        const now = (0, moment_1.default)();
+        const selectedYear = year ? parseInt(year) : now.year();
+        const selectedMonth = month ? parseInt(month) : now.month() + 1; // month() es 0-index
+        const result = [];
+        for (const country in countryCompanyMap) {
+            const companyIds = countryCompanyMap[country];
+            // Sumar ventas del mes y año consultado
+            const startOfMonth = (0, moment_1.default)().year(selectedYear).month(selectedMonth - 1).startOf('month').toDate();
+            const endOfMonth = (0, moment_1.default)().year(selectedYear).month(selectedMonth - 1).endOf('month').toDate();
+            const monthlySales = yield quote_1.quote.sum('total', {
+                where: {
+                    companyId: companyIds,
+                    status: "Vendido",
+                    createdAt: { [sequelize_1.Op.between]: [startOfMonth, endOfMonth] }
+                }
+            });
+            // Buscar meta mensual
+            const meta = yield MetaVenta_1.metaVenta.findOne({
+                where: {
+                    usuarioId: userId,
+                    pais: country,
+                    anio: selectedYear
+                }
+            });
+            const metaMensual = meta ? Number(meta.getDataValue('metaMensual')) : 0;
+            const porcentajeAvance = metaMensual > 0 ? Number(((monthlySales || 0) / metaMensual * 100).toFixed(2)) : 0;
+            result.push({
+                country,
+                monthlySales: monthlySales || 0,
+                metaMensual,
+                porcentajeAvance,
+                year: selectedYear,
+                month: selectedMonth
+            });
+        }
+        return res.status(200).json({ monthlySalesProgress: result });
+    }
+    catch (error) {
+        console.error("Error al calcular avance mensual por país:", error);
+        return res.status(500).json({ message: "Error interno del servidor" });
+    }
+});
+exports.getMonthlySalesProgressByCountry = getMonthlySalesProgressByCountry;
+const getAnnualSalesProgressByCountry = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId, year } = req.params;
+        if (!userId) {
+            return res.status(400).json({ message: "Falta el ID de usuario para la consulta" });
+        }
+        // Obtener empresas y países administradas por el usuario
+        const companies = yield company_1.company.findAll({
+            attributes: ["id", "companyCountry"],
+            where: { TeamOwner: userId }
+        });
+        const countryCompanyMap = {};
+        companies.forEach((c) => {
+            if (!countryCompanyMap[c.companyCountry])
+                countryCompanyMap[c.companyCountry] = [];
+            countryCompanyMap[c.companyCountry].push(c.id);
+        });
+        // Año consultado
+        const now = (0, moment_1.default)();
+        const selectedYear = year ? parseInt(year) : now.year();
+        const startOfYear = (0, moment_1.default)().year(selectedYear).startOf('year').toDate();
+        const endOfYear = (0, moment_1.default)().year(selectedYear).endOf('year').toDate();
+        const result = [];
+        for (const country in countryCompanyMap) {
+            const companyIds = countryCompanyMap[country];
+            // Sumar ventas del año consultado
+            const annualSales = yield quote_1.quote.sum('total', {
+                where: {
+                    companyId: companyIds,
+                    status: "Vendido",
+                    createdAt: { [sequelize_1.Op.between]: [startOfYear, endOfYear] }
+                }
+            });
+            // Buscar meta anual
+            const meta = yield MetaVenta_1.metaVenta.findOne({
+                where: {
+                    usuarioId: userId,
+                    pais: country,
+                    anio: selectedYear
+                }
+            });
+            const metaAnual = meta ? Number(meta.getDataValue('metaAnual')) : 0;
+            const porcentajeAvance = metaAnual > 0 ? Number(((annualSales || 0) / metaAnual * 100).toFixed(2)) : 0;
+            result.push({
+                country,
+                annualSales: annualSales || 0,
+                metaAnual,
+                porcentajeAvance,
+                year: selectedYear
+            });
+        }
+        return res.status(200).json({ annualSalesProgress: result });
+    }
+    catch (error) {
+        console.error("Error al calcular avance anual por país:", error);
+        return res.status(500).json({ message: "Error interno del servidor" });
+    }
+});
+exports.getAnnualSalesProgressByCountry = getAnnualSalesProgressByCountry;
